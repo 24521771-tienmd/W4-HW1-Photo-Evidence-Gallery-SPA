@@ -1,11 +1,11 @@
 const EAGER_COUNT = 4 // approximate first row; the rest are lazy-loaded
 
-export default function PhotoGrid({ photos = [] }) {
+export default function PhotoGrid({ photos = [], onSelect }) {
   return (
     <ul className="photo-grid" aria-label="Photos">
       {photos.map((photo, index) => (
         <li key={photo.id}>
-          <button type="button" className="photo-card">
+          <button type="button" className="photo-card" onClick={() => onSelect?.(photo.id)}>
             <img
               src={photo.thumb}
               srcSet={`${photo.thumb} 400w, ${photo.full} 1200w`}

@@ -7,7 +7,7 @@ One line per planned commit. Tick the box in the same commit as the work.
 - [x] `docs: add project rules, task decomposition, AI audit template and env example`
 
 ## Sprint 1 - Routing and data
-- [ ] Router layout: `BrowserRouter`, `Routes`, nested layout with `Outlet`, `NavLink` navigation, lazy routes with skeleton fallbacks
+- [x] Router layout: `BrowserRouter`, `Routes`, nested layout with `Outlet`, `NavLink` navigation, lazy routes with skeleton fallbacks
 - [ ] Photo assets + data: image files, photo data module (ids, categories, alt text, dimensions)
 
 ## Sprint 2 - Gallery features

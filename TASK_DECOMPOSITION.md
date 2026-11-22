@@ -9,7 +9,7 @@ One line per planned commit. Tick the box in the same commit as the work.
 ## Sprint 1 - Routing and data
 - [x] Router layout: `BrowserRouter`, `Routes`, nested layout with `Outlet`, `NavLink` navigation, lazy routes with skeleton fallbacks
 - [x] Photo assets: `npm run photos` script generating optimized local WebP evidence images (400 + 1200)
-- [ ] Photo data: catalog module (ids, categories, alt text, dimensions) + query helpers
+- [x] Photo data: catalog module (ids, categories, alt text, dimensions) + query helpers
 
 ## Sprint 2 - Gallery features
 - [ ] Category filter via `useSearchParams` (`?category=devices`)

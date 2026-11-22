@@ -12,7 +12,7 @@ One line per planned commit. Tick the box in the same commit as the work.
 - [x] Photo data: catalog module (ids, categories, alt text, dimensions) + query helpers
 
 ## Sprint 2 - Gallery features
-- [ ] Category filter via `useSearchParams` (`?category=devices`)
+- [x] Category filter via `useSearchParams` (`?category=devices`)
 - [ ] Dialog lightbox: native `<dialog>`, `?photoId=` deep link, open/close sync with URL
 - [ ] Lightbox keyboard and focus: Esc, arrow navigation, focus trap/return, focus restore on close
 

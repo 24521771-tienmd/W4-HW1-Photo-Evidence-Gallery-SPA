@@ -5,7 +5,7 @@ import App from '../App.jsx'
 
 function LocationProbe() {
   const { pathname, search } = useLocation()
-  return <output data-testid="location">{pathname + search}</output>
+  return <span data-testid="location">{pathname + search}</span>
 }
 
 async function renderGallery(url) {

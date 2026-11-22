@@ -17,7 +17,7 @@ One line per planned commit. Tick the box in the same commit as the work.
 - [x] Lightbox keyboard and focus: Esc, arrow navigation, focus trap/return, focus restore on close
 
 ## Sprint 3 - Quality
-- [ ] Accessibility pass: WCAG 2.2 AA audit, contrast, target size, reduced motion, landmarks
+- [x] Accessibility pass: WCAG 2.2 AA audit, contrast, target size, reduced motion, landmarks
 - [ ] Performance pass: code splitting, image sizing/lazy loading, CLS = 0, Lighthouse 100/100/100/100
 
 ## Sprint 4 - Docs

@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "photos": "node scripts/generate-photos.mjs"
+    "photos": "node scripts/generate-photos.mjs",
+    "lh": "npx lighthouse http://localhost:4173/gallery --preset=desktop --output=html --output-path=./lighthouse-report.html"
   },
   "dependencies": {
     "react": "^19.3.1",

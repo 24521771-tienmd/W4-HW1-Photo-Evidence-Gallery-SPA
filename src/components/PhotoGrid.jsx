@@ -1,4 +1,5 @@
-const EAGER_COUNT = 4 // approximate first row; the rest are lazy-loaded
+const EAGER_COUNT = 8 // roughly the first two rows on desktop; the rest are lazy-loaded
+const HIGH_PRIORITY_COUNT = 4 // approximately the first row
 
 export default function PhotoGrid({ photos = [], onSelect, registerCard }) {
   return (
@@ -16,7 +17,7 @@ export default function PhotoGrid({ photos = [], onSelect, registerCard }) {
               height={300}
               alt={photo.alt}
               loading={index < EAGER_COUNT ? undefined : 'lazy'}
-              fetchPriority={index === 0 ? 'high' : undefined}
+              fetchPriority={index < HIGH_PRIORITY_COUNT ? 'high' : undefined}
               decoding="async"
             />
             <span className="photo-card__caption">

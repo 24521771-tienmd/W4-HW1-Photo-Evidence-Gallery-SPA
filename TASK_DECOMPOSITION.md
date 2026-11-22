@@ -18,7 +18,7 @@ One line per planned commit. Tick the box in the same commit as the work.
 
 ## Sprint 3 - Quality
 - [x] Accessibility pass: WCAG 2.2 AA audit, contrast, target size, reduced motion, landmarks
-- [ ] Performance pass: code splitting, image sizing/lazy loading, CLS = 0, Lighthouse 100/100/100/100
+- [x] Performance pass: code splitting, image sizing/lazy loading, CLS = 0, Lighthouse 100/100/100/100
 
 ## Sprint 4 - Docs
 - [ ] Docs: README update, Lighthouse results, AI failure audit entries (real ones only)

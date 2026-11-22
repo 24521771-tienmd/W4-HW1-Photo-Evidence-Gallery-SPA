@@ -42,6 +42,8 @@ a {
 }
 
 html {
+  /* Reserve the scrollbar so content loading in never shifts the layout sideways. */
+  scrollbar-gutter: stable;
   /* Keep focused elements clear of any sticky/fixed header. */
   scroll-padding-top: calc(var(--header-height) + 1rem);
 }
@@ -130,7 +132,8 @@ main {
 }
 
 .page--gallery {
-  min-height: 40rem;
+  /* At least one viewport tall, like its skeleton, so the footer never shifts into view. */
+  min-height: 100vh;
 }
 
 .button-link {
@@ -161,7 +164,7 @@ main {
 }
 
 .page-skeleton--gallery {
-  min-height: 40rem;
+  min-height: 100vh;
 }
 
 .skeleton-block {

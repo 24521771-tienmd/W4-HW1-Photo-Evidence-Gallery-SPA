@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router'
 import CategoryFilter from '../components/CategoryFilter.jsx'
 import Lightbox from '../components/Lightbox.jsx'
@@ -9,6 +9,8 @@ import { getPhotoById, getPhotosByCategory } from '../data/photoQueries.js'
 export default function Gallery() {
   const [searchParams, setSearchParams] = useSearchParams()
   const category = searchParams.get('category')
+  const cardRefs = useRef(new Map())
+  const headingRef = useRef(null)
 
   // Derived during render: an unknown category behaves like "All".
   const active = CATEGORIES.find((c) => c.slug === category) ?? null
@@ -40,6 +42,28 @@ export default function Gallery() {
     })
   }
 
+  function handleNavigate(id) {
+    setSearchParams(
+      (prev) => {
+        prev.set('photoId', id)
+        return prev
+      },
+      { replace: true },
+    )
+  }
+
+  const registerCard = useCallback((id, el) => {
+    if (el) cardRefs.current.set(id, el)
+    else cardRefs.current.delete(id)
+  }, [])
+
+  // Focus the last shown photo's grid button if it is in the list, else the page heading.
+  const restoreFocus = useCallback((id) => {
+    const card = cardRefs.current.get(id)
+    if (card) card.focus()
+    else headingRef.current?.focus()
+  }, [])
+
   function handleChange(slug) {
     setSearchParams((prev) => {
       if (slug) prev.set('category', slug)
@@ -51,7 +75,9 @@ export default function Gallery() {
   return (
     <div className="page page--gallery">
       <title>Gallery | Evidence Gallery</title>
-      <h1>Gallery</h1>
+      <h1 ref={headingRef} tabIndex={-1}>
+        Gallery
+      </h1>
       <CategoryFilter activeCategory={active?.slug ?? null} onChange={handleChange} />
       <p role="status" className="result-count">
         Showing {photos.length} photos in {active ? active.label : 'all categories'}
@@ -64,8 +90,14 @@ export default function Gallery() {
           </button>
         </div>
       )}
-      <PhotoGrid photos={photos} onSelect={handleSelect} />
-      <Lightbox photo={selectedPhoto} onClose={handleClose} />
+      <PhotoGrid photos={photos} onSelect={handleSelect} registerCard={registerCard} />
+      <Lightbox
+        photo={selectedPhoto}
+        list={photos}
+        onClose={handleClose}
+        onNavigate={handleNavigate}
+        onRestoreFocus={restoreFocus}
+      />
     </div>
   )
 }

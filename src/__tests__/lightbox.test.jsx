@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, useLocation, useNavigate } from 'react-router'
 import App from '../App.jsx'
@@ -91,5 +91,89 @@ describe('URL-driven lightbox', () => {
     await user.click(screen.getByRole('button', { name: /clear/i }))
     expect(location()).toBe('/gallery?category=devices')
     expect(screen.queryByText(/not found/i)).not.toBeInTheDocument()
+  })
+})
+
+describe('lightbox keyboard navigation', () => {
+  it('shows labelled previous/next buttons and a position text', async () => {
+    await renderGallery('/gallery?category=devices&photoId=dev-03')
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).getByRole('button', { name: 'Previous photo: Mobile phone' })).toBeInTheDocument()
+    expect(within(dialog).getByRole('button', { name: 'Next photo: Tablet device' })).toBeInTheDocument()
+    expect(within(dialog).getByText('3 of 6')).toBeInTheDocument()
+  })
+
+  it('goes to the next photo with the Next button', async () => {
+    const user = userEvent.setup()
+    await renderGallery('/gallery?category=devices&photoId=dev-03')
+    await user.click(await screen.findByRole('button', { name: /^Next photo/ }))
+    expect(location()).toBe('/gallery?category=devices&photoId=dev-04')
+    expect(screen.getByText('4 of 6')).toBeInTheDocument()
+  })
+
+  it('ArrowRight/ArrowLeft move within the filtered list and wrap around', async () => {
+    await renderGallery('/gallery?category=devices&photoId=dev-06')
+    const dialog = await screen.findByRole('dialog')
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' })
+    expect(location()).toBe('/gallery?category=devices&photoId=dev-01')
+    fireEvent.keyDown(dialog, { key: 'ArrowLeft' })
+    expect(location()).toBe('/gallery?category=devices&photoId=dev-06')
+    expect(within(dialog).getByRole('heading', { name: 'Field phone' })).toBeInTheDocument()
+  })
+
+  it('replaces history on arrow navigation so Back closes the lightbox', async () => {
+    const user = userEvent.setup()
+    await renderGallery('/gallery?category=devices')
+    const grid = screen.getByRole('list', { name: 'Photos' })
+    await user.click(within(grid).getAllByRole('button')[0])
+    const dialog = await screen.findByRole('dialog')
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' })
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' })
+    expect(location()).toBe('/gallery?category=devices&photoId=dev-03')
+    await user.click(screen.getByRole('button', { name: 'history back' }))
+    expect(location()).toBe('/gallery?category=devices')
+  })
+
+  it('has no prev/next controls when the photo is outside the filtered list', async () => {
+    await renderGallery('/gallery?category=devices&photoId=doc-01')
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).queryByRole('button', { name: /^Next photo/ })).toBeNull()
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' })
+    expect(location()).toBe('/gallery?category=devices&photoId=doc-01')
+  })
+})
+
+describe('lightbox focus restoration', () => {
+  it('returns focus to the grid button of the last shown photo', async () => {
+    const user = userEvent.setup()
+    await renderGallery('/gallery?category=devices')
+    const grid = screen.getByRole('list', { name: 'Photos' })
+    await user.click(within(grid).getAllByRole('button')[0])
+    const dialog = await screen.findByRole('dialog')
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' }) // now dev-02
+    await user.click(within(dialog).getByRole('button', { name: 'Close photo' }))
+    expect(document.activeElement).toBe(within(grid).getAllByRole('button')[1])
+  })
+
+  it('falls back to the gallery heading when the photo is not in the current list', async () => {
+    const user = userEvent.setup()
+    await renderGallery('/gallery?category=devices&photoId=doc-01')
+    await user.click(await screen.findByRole('button', { name: 'Close photo' }))
+    expect(document.activeElement).toBe(screen.getByRole('heading', { level: 1, name: 'Gallery' }))
+  })
+})
+
+describe('next-image preload', () => {
+  const preload = (name) => document.head.querySelector(`link[rel="preload"][as="image"][href="/photos/${name}-1200.webp"]`)
+
+  it('does not preload while the dialog is closed, and preloads the next image when open', async () => {
+    await renderGallery('/gallery?category=exhibits')
+    expect(preload('exh-02')).toBeNull()
+  })
+
+  it('preloads the next image when the dialog is open', async () => {
+    await renderGallery('/gallery?category=exhibits&photoId=exh-01')
+    await screen.findByRole('dialog')
+    expect(preload('exh-02')).not.toBeNull()
   })
 })

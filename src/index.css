@@ -394,3 +394,33 @@ main {
   margin: 0;
   font-weight: 700;
 }
+
+/* Lightbox navigation */
+.lightbox__nav {
+  position: absolute;
+  top: 40%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #ffffff;
+  background: rgb(0 0 0 / 0.75);
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.lightbox__nav--prev {
+  left: 1.5rem;
+}
+
+.lightbox__nav--next {
+  right: 1.5rem;
+}
+
+.lightbox__position {
+  margin: 0.25rem 0 0;
+  color: var(--color-muted);
+}

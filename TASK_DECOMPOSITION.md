@@ -14,7 +14,7 @@ One line per planned commit. Tick the box in the same commit as the work.
 ## Sprint 2 - Gallery features
 - [x] Category filter via `useSearchParams` (`?category=devices`)
 - [x] Dialog lightbox: native `<dialog>`, `?photoId=` deep link, open/close sync with URL
-- [ ] Lightbox keyboard and focus: Esc, arrow navigation, focus trap/return, focus restore on close
+- [x] Lightbox keyboard and focus: Esc, arrow navigation, focus trap/return, focus restore on close
 
 ## Sprint 3 - Quality
 - [ ] Accessibility pass: WCAG 2.2 AA audit, contrast, target size, reduced motion, landmarks
